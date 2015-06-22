@@ -6,7 +6,7 @@ The main code of this interface is stored in the sub-folder "QTMyPaint"
 
 This lib is at a very early stage and only implements very basic features. Please feel free to fork and modify this project.
 
-License: GPL v3, see [LICENSE.TXT](./LICENSE) for details
+License: GPL v3, see [LICENSE](./LICENSE) for details
 
 
 Prerequisites
