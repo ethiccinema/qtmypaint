@@ -28,6 +28,8 @@ FORMS    += \
     $$PWD/mainwindow.ui
 
 
+INCLUDEPATH += \
+    $$PWD/../libmypaint
 
 
 
