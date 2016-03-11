@@ -32,7 +32,6 @@ else:unix: LIBS += -L$$OUT_PWD/../json-c/ -ljson-c
 INCLUDEPATH += $$PWD/../json-c
 DEPENDPATH += $$PWD/../json-c
 
-
 win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../json-c/release/libjson-c.a
 else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../json-c/debug/libjson-c.a
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../json-c/release/json-c.lib
