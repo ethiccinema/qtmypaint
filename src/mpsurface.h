@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with QTMyPaint. If not, see <http://www.gnu.org/licenses/>.
 */
+
 #ifndef MPSURFACE_H
 #define MPSURFACE_H
 
@@ -28,15 +29,11 @@
 
 #include "mypaint-glib-compat.h"
 #include "mypaint-tiled-surface.h"
-
 #include "mpbrush.h"
-
 #include "mptile.h"
-
 
 class MPSurface : public MyPaintTiledSurface
 {
-
 public:
     MPSurface(int width, int height);
     ~MPSurface();
@@ -51,13 +48,12 @@ public:
 
     enum { k_center = 50, k_max = 2*k_center};
 
-
-    MPTile*         getTileFromPos (const QPoint& pos);
-    MPTile*         getTileFromIdx (const QPoint& idx);
-    inline bool     checkIndex     (uint n);
-    inline QPoint   getTilePos     (const QPoint& idx);
-    inline QPoint   getTileIndex   (const QPoint& pos);
-    inline QPointF  getTileFIndex  (const QPoint& pos);
+    MPTile* getTileFromPos(const QPoint& pos);
+    MPTile* getTileFromIdx(const QPoint& idx);
+    inline bool checkIndex(uint n);
+    inline QPoint getTilePos(const QPoint& idx);
+    inline QPoint getTileIndex(const QPoint& pos);
+    inline QPointF getTileFIndex(const QPoint& pos);
 
     typedef void (*MPOnUpdateFunction) (MPSurface *surface, MPTile *tile);
 
@@ -69,7 +65,6 @@ public:
 
 private:
     void resetNullTile();
-
     std::string key;
 
     int tiles_width; // width in tiles
@@ -80,11 +75,8 @@ private:
     MPBrush*    m_brush;
     QColor      m_color;
 
-
 protected:
     MPTile* m_tileTable [k_max][k_max];
-
 };
-
 
 #endif // MPSURFACE_H

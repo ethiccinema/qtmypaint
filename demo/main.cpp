@@ -16,12 +16,12 @@
     You should have received a copy of the GNU General Public License
     along with QTMyPaint. If not, see <http://www.gnu.org/licenses/>.
 */
+
 #include "mainwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
-
     QApplication a(argc, argv);
     MainWindow window;
     window.show();
