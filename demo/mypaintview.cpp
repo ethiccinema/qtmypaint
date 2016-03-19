@@ -37,11 +37,11 @@ MypaintView::MypaintView()
     connect(mypaint, SIGNAL(updateTile(MPSurface*, MPTile*)), this, SLOT(onUpdateTile(MPSurface*, MPTile*)));
 
     // Set scene
-    m_scene.setSceneRect(QRect(QPoint(), QSize(1920, 1080)));
+    m_scene.setSceneRect(this->rect());
     setScene(&m_scene);
-    setAlignment(0);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    setAlignment((Qt::AlignLeft | Qt::AlignTop));
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 MypaintView::~MypaintView()
