@@ -14,7 +14,7 @@ Prerequisites
 
 Build dependencies:
 * [json-c](https://github.com/json-c/json-c/wiki) A copy of json-c is included in this project
-* [libmypaint](https://github.com/mypaint/libmypaint) A copy of libmypaint is included in this project. It has been modified to be built in a C++ environment. It may not be the best approach. "libmypaint.c" has to be included so I couldn't just use the headers of a pre-built version of the C lib.
+* [libmypaint](https://github.com/mypaint/libmypaint) A copy of libmypaint is included in this project. It has been modified to be built in a C++ environment. It may not be the best approach. "libmypaint.c" has to be included so we can't use the headers of a pre-built version of the C lib.
 
 
 
