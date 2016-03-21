@@ -31,7 +31,7 @@ MypaintView::MypaintView()
 
     using_tablet = false;
 
-    MPHandler *mypaint = MPHandler::handler();
+    mypaint = MPHandler::handler();
 
     connect(mypaint, SIGNAL(newTile(MPSurface*, MPTile*)), this, SLOT(onNewTile(MPSurface*, MPTile*)));
     connect(mypaint, SIGNAL(updateTile(MPSurface*, MPTile*)), this, SLOT(onUpdateTile(MPSurface*, MPTile*)));
@@ -47,6 +47,11 @@ MypaintView::MypaintView()
 MypaintView::~MypaintView()
 {
 
+}
+
+void MypaintView::setSize(QSize size)
+{
+    mypaint->setSurfaceSize(size);
 }
 
 void MypaintView::onNewTile(MPSurface *surface, MPTile *tile)

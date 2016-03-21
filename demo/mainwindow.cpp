@@ -27,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Central widget:
-    MypaintView* mpView = new MypaintView();
-    setCentralWidget (mpView);
+    mp_view = new MypaintView();
+    setCentralWidget (mp_view);
 
     // Add a color selector:
     QDockWidget* p_dockColor = new QDockWidget("Color selection");
@@ -39,10 +39,16 @@ MainWindow::MainWindow(QWidget *parent) :
     addDockWidget ( Qt::RightDockWidgetArea, p_dockColor );
 
 
-    connect(m_colorBtn, SIGNAL(pressed ()), mpView, SLOT(btnChgColorPressed()));
+    connect(m_colorBtn, SIGNAL(pressed ()), mp_view, SLOT(btnChgColorPressed()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED( event );
+    mp_view->setSize(this->centralWidget()->rect().size());
 }

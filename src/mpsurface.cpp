@@ -68,8 +68,38 @@ static void onTileRequestEnd(MyPaintTiledSurface *tiled_surface, MyPaintTileRequ
     self->onUpdateTileFunction(self, tile);
 }
 
-MPSurface::MPSurface(int width, int height)
+MPSurface::MPSurface(QSize size)
 {
+    // Init callbacks
+    //
+    this->onUpdateTileFunction   = defaultUpdateFonction;
+    this->onNewTileFunction      = defaultUpdateFonction;
+
+    setSize(size);
+
+    mypaint_tiled_surface_init((MyPaintTiledSurface *)this, onTileRequestStart, onTileRequestEnd);
+}
+
+MPSurface::~MPSurface()
+{
+
+}
+
+void MPSurface::setOnUpdateTile(MPOnUpdateFunction onUpdateFunction)
+{
+    this->onUpdateTileFunction = onUpdateFunction;
+}
+
+void MPSurface::setOnNewTile(MPOnUpdateFunction onNewTileFunction)
+{
+    this->onNewTileFunction = onNewTileFunction;
+}
+
+void MPSurface::setSize(QSize size)
+{
+    int width = size.width();
+    int height = size.height();
+
     assert(width > 0);
     assert(height > 0);
 
@@ -104,28 +134,6 @@ MPSurface::MPSurface(int width, int height)
     this->width = width;
 
     resetNullTile();
-
-    // Init callbacks
-    //
-    this->onUpdateTileFunction   = defaultUpdateFonction;
-    this->onNewTileFunction         = defaultUpdateFonction;
-
-    mypaint_tiled_surface_init((MyPaintTiledSurface *)this, onTileRequestStart, onTileRequestEnd);
-}
-
-MPSurface::~MPSurface()
-{
-
-}
-
-void MPSurface::setOnUpdateTile(MPOnUpdateFunction onUpdateFunction)
-{
-    this->onUpdateTileFunction = onUpdateFunction;
-}
-
-void MPSurface::setOnNewTile(MPOnUpdateFunction onNewTileFunction)
-{
-    this->onNewTileFunction = onNewTileFunction;
 }
 
 int MPSurface::getTilesWidth()

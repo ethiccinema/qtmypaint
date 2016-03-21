@@ -35,7 +35,7 @@
 class MPSurface : public MyPaintTiledSurface
 {
 public:
-    MPSurface(int width, int height);
+    MPSurface(QSize size);
     ~MPSurface();
 
     uint16_t *tile_buffer; // Stores tiles in a linear chunk of memory (16bpc RGBA)
@@ -62,6 +62,8 @@ public:
 
     MPOnUpdateFunction onUpdateTileFunction;
     MPOnUpdateFunction onNewTileFunction;
+
+    void setSize(QSize size);
 
 private:
     void resetNullTile();

@@ -40,11 +40,15 @@ public:
     MypaintView();
     ~MypaintView();
 
+    void setSize(QSize size);
+
 private:
 
     QGraphicsScene m_scene;
     QColor m_color;
     bool using_tablet;
+
+    MPHandler *mypaint;
 
 protected:
     virtual void tabletEvent(QTabletEvent *event);
