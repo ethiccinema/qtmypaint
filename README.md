@@ -2,7 +2,7 @@
 
 QTMyPaint is an interface to help integrate the libmypaint brush engine library within your QT based applications. (The example's GUI is based on a demo application made by Sebastien Leon)
 
-The main code of this interface is stored in the sub-folder "QTMyPaint"
+The main code of this interface is stored in the sub-folder "src"
 
 This lib is at a very early stage and only implements very basic features. Please feel free to fork and modify this project.
 
@@ -25,9 +25,13 @@ A global object is used for the communication with libmypaint
 
     MPHandler *mypaint = MPHandler::handler();
 
+Set the size of your drwaing surface :
+
+    mypaint->setSurfaceSize(QSize(640, 480));
 
 Set a brush color :
-    mypaint->->setBrushColor(QColor(0, 0, 0));
+
+    mypaint->setBrushColor(QColor(0, 0, 0));
 
 Draw a stroke :
 
