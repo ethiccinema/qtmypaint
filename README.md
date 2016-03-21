@@ -25,7 +25,7 @@ A global object is used for the communication with libmypaint
 
     MPHandler *mypaint = MPHandler::handler();
 
-Set the size of your drwaing surface :
+Set the size of your drawing surface :
 
     mypaint->setSurfaceSize(QSize(640, 480));
 
