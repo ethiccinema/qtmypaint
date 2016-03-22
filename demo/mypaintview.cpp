@@ -29,7 +29,7 @@ MypaintView::MypaintView()
     assert(s_view == NULL);
     s_view = this;
 
-    using_tablet = false;
+    m_tabletInUse = false;
 
     mypaint = MPHandler::handler();
 
@@ -54,6 +54,18 @@ void MypaintView::setSize(QSize size)
     mypaint->setSurfaceSize(size);
 }
 
+void MypaintView::setTabletDevice(QTabletEvent* event)
+{
+    if (event->type() == QEvent::TabletEnterProximity) {
+        m_tabletInUse = true;
+    }
+    else if(event->type() == QEvent::TabletLeaveProximity) {
+        m_tabletInUse = false;
+    }
+
+    updateCursor(event);
+}
+
 void MypaintView::onNewTile(MPSurface *surface, MPTile *tile)
 {
     Q_UNUSED(surface);
@@ -68,10 +80,11 @@ void MypaintView::onUpdateTile(MPSurface *surface, MPTile *tile)
 
 void MypaintView::tabletEvent(QTabletEvent *event)
 {
+    m_tabletInUse = true;
+
     switch (event->type()) {
         case QEvent::TabletPress:
             if (event->pointerType() == QTabletEvent::Pen) {
-                using_tablet = true;
                 MPHandler::handler()->startStroke();
                 event->accept();
             }
@@ -79,7 +92,6 @@ void MypaintView::tabletEvent(QTabletEvent *event)
         case QEvent::TabletRelease:
             if (event->pointerType() == QTabletEvent::Pen) {
                 // Finalize the stroke sequence.
-                using_tablet = false;
                 event->accept();
             }
         break;
@@ -106,7 +118,7 @@ void MypaintView::mouseMoveEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 
-    if (!using_tablet) {
+    if (!m_tabletInUse) {
         QPointF pt = mapToScene(event->pos());
         MPHandler::handler()->strokeTo(pt.x(), pt.y());
     }
@@ -130,4 +142,44 @@ void MypaintView::btnChgColorPressed()
             mypaint->setBrushColor(newColor);
         }
     }
+}
+
+void MypaintView::updateCursor(const QTabletEvent *event)
+{
+    QCursor cursor;
+    if (event->type() != QEvent::TabletLeaveProximity) {
+        if (event->pointerType() == QTabletEvent::Eraser) {
+            cursor = QCursor(QPixmap(":/resources/cursor-eraser.png"), 3, 28);
+        } else {
+            switch (event->device()) {
+            case QTabletEvent::Stylus:
+                cursor = QCursor(QPixmap(":/resources/cursor-pencil.png"), 0, 0);
+                break;
+            case QTabletEvent::Airbrush:
+                cursor = QCursor(QPixmap(":/resources/cursor-airbrush.png"), 3, 4);
+                break;
+            case QTabletEvent::RotationStylus: {
+                QImage origImg(QLatin1String(":/resources/cursor-felt-marker.png"));
+                QImage img(32, 32, QImage::Format_ARGB32);
+                QColor solid = m_color;
+                solid.setAlpha(255);
+                img.fill(solid);
+                QPainter painter(&img);
+                QTransform transform = painter.transform();
+                transform.translate(16, 16);
+                transform.rotate(-event->rotation());
+                painter.setTransform(transform);
+                painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+                painter.drawImage(-24, -24, origImg);
+                painter.setCompositionMode(QPainter::CompositionMode_HardLight);
+                painter.drawImage(-24, -24, origImg);
+                painter.end();
+                cursor = QCursor(QPixmap::fromImage(img), 16, 16);
+            } break;
+            default:
+                break;
+            }
+        }
+    }
+    setCursor(cursor);
 }

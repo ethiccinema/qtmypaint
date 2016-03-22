@@ -1,0 +1,8 @@
+<RCC>
+    <qresource>
+        <file>resources/cursor-airbrush.png</file>
+        <file>resources/cursor-eraser.png</file>
+        <file>resources/cursor-felt-marker.png</file>
+        <file>resources/cursor-pencil.png</file>
+    </qresource>
+</RCC>

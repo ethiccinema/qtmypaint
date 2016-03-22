@@ -16,38 +16,23 @@
     You should have received a copy of the GNU General Public License
     along with QTMyPaint. If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "demoapp.h"
 
-#include <QMainWindow>
-#include <QDockWidget>
-#include <QPushButton>
-#include <QColorDialog>
+bool DemoApp::event(QEvent *event)
+{
+    if ( event->type() == QEvent::TabletEnterProximity ||
+         event->type() == QEvent::TabletLeaveProximity ) {
 
-#include <mypaintview.h>
+        m_window->setTabletDevice(static_cast<QTabletEvent *>(event));
 
-namespace Ui {
-class MainWindow;
+        return true;
+    }
+
+    return QApplication::event(event);
 }
 
-class MainWindow : public QMainWindow
+void DemoApp::setMainWindow(MainWindow* window)
 {
-    Q_OBJECT
+    m_window = window;
+}
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-
-     void setTabletDevice(QTabletEvent *event);
-
-protected:
-    void resizeEvent( QResizeEvent *event );
-
-private:
-    Ui::MainWindow *ui;
-    MypaintView *mp_view;
-    QPushButton *m_colorBtn;
-    bool m_tabletActive;
-};
-
-#endif // MAINWINDOW_H

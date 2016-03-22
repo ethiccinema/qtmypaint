@@ -19,12 +19,15 @@
 
 #include "mainwindow.h"
 #include <QApplication>
+#include "demoapp.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    DemoApp app(argc, argv);
     MainWindow window;
     window.show();
 
-    return a.exec();
+    app.setMainWindow(&window);
+
+    return app.exec();
 }

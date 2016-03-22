@@ -38,13 +38,19 @@ MainWindow::MainWindow(QWidget *parent) :
     p_dockColor->setWidget(m_colorBtn);
     addDockWidget ( Qt::RightDockWidgetArea, p_dockColor );
 
-
     connect(m_colorBtn, SIGNAL(pressed ()), mp_view, SLOT(btnChgColorPressed()));
+
+    m_tabletActive = false;
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setTabletDevice(QTabletEvent* event)
+{
+    mp_view->setTabletDevice(event);
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)

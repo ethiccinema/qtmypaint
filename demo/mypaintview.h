@@ -41,12 +41,16 @@ public:
     ~MypaintView();
 
     void setSize(QSize size);
+    void setTabletDevice(QTabletEvent *event);
 
 private:
 
+    void updateCursor(const QTabletEvent *event);
+
     QGraphicsScene m_scene;
     QColor m_color;
-    bool using_tablet;
+
+    bool m_tabletInUse;
 
     MPHandler *mypaint;
 

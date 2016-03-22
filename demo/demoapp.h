@@ -16,38 +16,24 @@
     You should have received a copy of the GNU General Public License
     along with QTMyPaint. If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef DEMOAPP_H
+#define DEMOAPP_H
 
-#include <QMainWindow>
-#include <QDockWidget>
-#include <QPushButton>
-#include <QColorDialog>
+#include <QApplication>
+#include <QTabletEvent>
+#include "mainwindow.h"
 
-#include <mypaintview.h>
-
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow
+class DemoApp : public QApplication
 {
-    Q_OBJECT
-
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    DemoApp(int &argc, char **argv) : QApplication(argc, argv) {}
 
-     void setTabletDevice(QTabletEvent *event);
+    bool event(QEvent* event) Q_DECL_OVERRIDE;
 
-protected:
-    void resizeEvent( QResizeEvent *event );
+    void setMainWindow(MainWindow *m_window);
 
 private:
-    Ui::MainWindow *ui;
-    MypaintView *mp_view;
-    QPushButton *m_colorBtn;
-    bool m_tabletActive;
+    MainWindow* m_window;
 };
 
-#endif // MAINWINDOW_H
+#endif // DEMOAPP_H
