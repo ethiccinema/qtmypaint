@@ -26,6 +26,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <QGraphicsScene>
+#include <QImage>
 
 #include "mypaint-glib-compat.h"
 #include "mypaint-tiled-surface.h"
@@ -55,15 +57,21 @@ public:
     inline QPoint getTileIndex(const QPoint& pos);
     inline QPointF getTileFIndex(const QPoint& pos);
 
-    typedef void (*MPOnUpdateFunction) (MPSurface *surface, MPTile *tile);
+    typedef void (*MPOnUpdateTileFunction) (MPSurface *surface, MPTile *tile);
+    typedef void (*MPOnUpdateSurfaceFunction) (MPSurface *surface);
 
-    void setOnUpdateTile(MPOnUpdateFunction onUpdateTileFunction);
-    void setOnNewTile(MPOnUpdateFunction onNewTileFunction);
+    void setOnUpdateTile(MPOnUpdateTileFunction onUpdateTileFunction);
+    void setOnNewTile(MPOnUpdateTileFunction onNewTileFunction);
+    void setOnClearedSurface(MPOnUpdateSurfaceFunction onNewTileFunction);
 
-    MPOnUpdateFunction onUpdateTileFunction;
-    MPOnUpdateFunction onNewTileFunction;
+    MPOnUpdateTileFunction onUpdateTileFunction;
+    MPOnUpdateTileFunction onNewTileFunction;
+    MPOnUpdateSurfaceFunction onClearedSurfaceFunction;
 
     void setSize(QSize size);
+
+    void clear();
+    void render(QPainter *painter);
 
 private:
     void resetNullTile();
@@ -78,7 +86,7 @@ private:
     QColor      m_color;
 
 protected:
-    MPTile* m_tileTable [k_max][k_max];
+    QGraphicsScene surfaceScene;
 };
 
 #endif // MPSURFACE_H

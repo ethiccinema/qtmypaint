@@ -56,8 +56,12 @@ public:
 
     void requestUpdateTile(MPSurface *surface, MPTile *tile);
     void hasNewTile(MPSurface *surface, MPTile *tile);
+    void hasClearedSurface(MPSurface *surface);
 
     void setSurfaceSize(QSize size);
+
+    void clearSurface();
+    void renderSurface(QPainter *painter);
 
 private:
     MPHandler();
@@ -70,6 +74,7 @@ private:
 signals:
     void updateTile(MPSurface *surface, MPTile *tile);
     void newTile(MPSurface *surface, MPTile *tile);
+    void clearedSurface(MPSurface *surface);
 
 };
 

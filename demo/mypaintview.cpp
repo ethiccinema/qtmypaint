@@ -35,6 +35,7 @@ MypaintView::MypaintView()
 
     connect(mypaint, SIGNAL(newTile(MPSurface*, MPTile*)), this, SLOT(onNewTile(MPSurface*, MPTile*)));
     connect(mypaint, SIGNAL(updateTile(MPSurface*, MPTile*)), this, SLOT(onUpdateTile(MPSurface*, MPTile*)));
+    connect(mypaint, SIGNAL(clearedSurface(MPSurface*)), this, SLOT(onClearedSurface(MPSurface*)));
 
     // Set scene
     m_scene.setSceneRect(this->rect());
@@ -76,6 +77,12 @@ void MypaintView::onUpdateTile(MPSurface *surface, MPTile *tile)
 {
     Q_UNUSED(surface);
     tile->update();
+}
+
+void MypaintView::onClearedSurface(MPSurface *surface)
+{
+    Q_UNUSED(surface);
+    m_scene.clear();
 }
 
 void MypaintView::tabletEvent(QTabletEvent *event)
@@ -127,7 +134,10 @@ void MypaintView::mouseMoveEvent(QMouseEvent *event)
 void MypaintView::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
+
     // Finalize the stroke sequence.
+    //
+//    mypaint->clearSurface();
 }
 
 void MypaintView::btnChgColorPressed()

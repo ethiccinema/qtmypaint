@@ -66,6 +66,7 @@ public slots:
 
     void onNewTile(MPSurface *surface, MPTile *tile);
     void onUpdateTile(MPSurface *surface, MPTile *tile);
+    void onClearedSurface(MPSurface *surface);
 };
 
 #endif // MYPAINTVIEW_H

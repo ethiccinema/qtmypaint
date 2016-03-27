@@ -40,6 +40,12 @@ onNewTile(MPSurface *surface, MPTile *tile)
     handler->hasNewTile(surface, tile);
 }
 
+static void
+onClearedSurface(MPSurface *surface)
+{
+    MPHandler* handler = MPHandler::handler();
+    handler->hasClearedSurface(surface);
+}
 
 MPHandler *
 MPHandler::handler()
@@ -64,6 +70,7 @@ MPHandler::MPHandler()
 
     this->m_surface->setOnUpdateTile(onUpdatedTile);
     this->m_surface->setOnNewTile(onNewTile);
+    this->m_surface->setOnClearedSurface(onClearedSurface);
 }
 
 MPHandler::~MPHandler()
@@ -83,9 +90,24 @@ MPHandler::hasNewTile(MPSurface *surface, MPTile *tile)
     emit newTile(surface, tile);
 }
 
+void MPHandler::hasClearedSurface(MPSurface *surface)
+{
+    emit clearedSurface(surface);
+}
+
 void MPHandler::setSurfaceSize(QSize size)
 {
     m_surface->setSize(size);
+}
+
+void MPHandler::clearSurface()
+{
+    m_surface->clear();
+}
+
+void MPHandler::renderSurface(QPainter *painter)
+{
+    m_surface->render(painter);
 }
 
 void

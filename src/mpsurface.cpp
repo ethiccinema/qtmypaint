@@ -85,14 +85,19 @@ MPSurface::~MPSurface()
 
 }
 
-void MPSurface::setOnUpdateTile(MPOnUpdateFunction onUpdateFunction)
+void MPSurface::setOnUpdateTile(MPOnUpdateTileFunction onUpdateFunction)
 {
     this->onUpdateTileFunction = onUpdateFunction;
 }
 
-void MPSurface::setOnNewTile(MPOnUpdateFunction onNewTileFunction)
+void MPSurface::setOnNewTile(MPOnUpdateTileFunction onNewTileFunction)
 {
     this->onNewTileFunction = onNewTileFunction;
+}
+
+void MPSurface::setOnClearedSurface(MPOnUpdateSurfaceFunction onClearedSurfaceFunction)
+{
+    this->onClearedSurfaceFunction = onClearedSurfaceFunction;
 }
 
 void MPSurface::setSize(QSize size)
@@ -100,10 +105,10 @@ void MPSurface::setSize(QSize size)
     int width = size.width();
     int height = size.height();
 
+    surfaceScene.setSceneRect(QRect(QPoint(0,0), size));
+
     assert(width > 0);
     assert(height > 0);
-
-    memset( m_tileTable, 0, sizeof(m_tileTable));
 
     const int tile_size_pixels = MYPAINT_TILE_SIZE;
 
@@ -134,6 +139,17 @@ void MPSurface::setSize(QSize size)
     this->width = width;
 
     resetNullTile();
+}
+
+void MPSurface::clear()
+{
+    surfaceScene.clear();
+    this->onClearedSurfaceFunction(this);
+}
+
+void MPSurface::render(QPainter *painter)
+{
+    surfaceScene.render(painter);
 }
 
 int MPSurface::getTilesWidth()
@@ -168,22 +184,20 @@ MPTile* MPSurface::getTileFromPos(const QPoint& pos)
 
 MPTile* MPSurface::getTileFromIdx(const QPoint& idx)
 {
-    MPTile* result = NULL;
-    // Which tile index is it ?
-    if (checkIndex(idx.x()) && checkIndex(idx.y())) { // out of range ?
-        // Ok, valid index. Does it exist already ?
-        result = m_tileTable [idx.x()][idx.y()];
-        if (!result) {
-            // Time to allocate it, update table and insert it as a QGraphicsItem in scene:
-            result = new MPTile();
-            m_tileTable [idx.x()][idx.y()] = result;
-            QPoint tilePos ( getTilePos(idx) );
-            result->setPos(tilePos);
-            this->onNewTileFunction(this, result);
-        }
+
+    QTransform transform;
+    MPTile* selectedTile = (MPTile*)surfaceScene.itemAt(idx, transform);
+
+    if (!selectedTile) {
+        selectedTile = new MPTile();
+        QPoint tilePos ( getTilePos(idx) );
+        selectedTile->setPos(tilePos);
+
+        surfaceScene.addItem(selectedTile);
+        this->onNewTileFunction(this, selectedTile);
     }
 
-    return result;
+    return selectedTile;
 }
 
 inline bool MPSurface::checkIndex(uint n)

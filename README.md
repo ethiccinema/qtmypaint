@@ -47,6 +47,7 @@ A signal/slot mecanism is used to handle stroke events :
 
 * newTile(MPSurface*, MPTile*) is called when a tile is added to the surface (the brush is drawing on a blank area)
 * updateTile(MPSurface*, MPTile*) is called when a tile is visually updated.
+* clearedSurface(MPSurface*) is called when the surface has been cleared (through mypaint->clearSurface().
 
 MPTile inherits from QGraphicsItem and can be used with a QGraphicsScene object.
 
