@@ -62,7 +62,7 @@ public:
     QSize surfaceSize();
 
     void clearSurface();
-    void renderSurface(QPainter *painter);
+    QImage renderImage();
 
 private:
     MPHandler();

@@ -110,9 +110,10 @@ void MPHandler::clearSurface()
     m_surface->clear();
 }
 
-void MPHandler::renderSurface(QPainter *painter)
+QImage MPHandler::renderImage()
 {
-    m_surface->render(painter);
+    QImage image = m_surface->renderImage();
+    return image;
 }
 
 void

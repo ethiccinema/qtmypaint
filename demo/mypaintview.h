@@ -43,6 +43,8 @@ public:
     void setSize(QSize size);
     void setTabletDevice(QTabletEvent *event);
 
+    void saveToFile(QString filePath);
+
 private:
 
     void updateCursor(const QTabletEvent *event);

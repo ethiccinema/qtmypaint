@@ -72,7 +72,7 @@ public:
     QSize size();
 
     void clear();
-    void render(QPainter *painter);
+    QImage renderImage();
 
 private:
     void resetNullTile();

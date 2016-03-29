@@ -158,6 +158,12 @@ void MypaintView::btnClearPressed()
     mypaint->clearSurface();
 }
 
+void MypaintView::saveToFile(QString filePath)
+{
+    QImage image = mypaint->renderImage();
+    image.save(filePath);
+}
+
 void MypaintView::updateCursor(const QTabletEvent *event)
 {
     QCursor cursor;

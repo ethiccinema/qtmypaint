@@ -80,6 +80,7 @@ MPSurface::MPSurface(QSize size)
 
     resetSurface(size);
 
+
     mypaint_tiled_surface_init((MyPaintTiledSurface *)this, onTileRequestStart, onTileRequestEnd);
 }
 
@@ -132,12 +133,36 @@ void MPSurface::clear()
     this->onClearedSurfaceFunction(this);
 }
 
-void MPSurface::render(QPainter *painter)
+QImage MPSurface::renderImage()
 {
+    QPixmap renderedImage = QPixmap(size());
+    //renderedImage = renderedImage.scaled(size());
+    renderedImage.fill(QColor(Qt::transparent));
 
-//    surfaceScene.setSceneRect(QRect(QPoint(0,0), size));
-//    surfaceScene.render(painter);
+    QGraphicsScene surfaceScene;
+    surfaceScene.setSceneRect(QRect(QPoint(0,0), size()));
 
+
+    QHashIterator<QPoint, MPTile*> i(m_Tiles);
+    while (i.hasNext()) {
+        i.next();
+        MPTile *tile = i.value();
+        if (tile)
+        {
+            QGraphicsPixmapItem* item = new QGraphicsPixmapItem( QPixmap::fromImage(tile->image()));
+            item->setPos(tile->pos());
+            surfaceScene.addItem(item);
+        }
+    }
+
+    QPainter painter;
+    painter.begin(&renderedImage);
+    surfaceScene.render(&painter);
+    painter.end();
+
+    surfaceScene.clear();
+
+    return renderedImage.toImage();
 }
 
 int MPSurface::getTilesWidth()

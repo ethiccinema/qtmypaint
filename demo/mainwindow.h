@@ -40,6 +40,9 @@ public:
 
      void setTabletDevice(QTabletEvent *event);
 
+public slots:
+    void btnSavePressed();
+
 protected:
     void resizeEvent( QResizeEvent *event );
 
@@ -48,6 +51,7 @@ private:
     MypaintView *mp_view;
     QPushButton *m_colorBtn;
     QPushButton *m_clearBtn;
+    QPushButton *m_saveBtn;
     bool m_tabletActive;
 };
 

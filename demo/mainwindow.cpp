@@ -59,12 +59,19 @@ MainWindow::MainWindow(QWidget *parent) :
     // Clear button
     //
     m_clearBtn = new QPushButton("Clear");
-    m_clearBtn->setMinimumHeight(60);
+//    m_clearBtn->setMinimumHeight(60);
 
     toolsLayout->addWidget(m_clearBtn);
 
     connect(m_clearBtn, SIGNAL(pressed ()), mp_view, SLOT(btnClearPressed()));
 
+
+    m_saveBtn = new QPushButton("Save");
+//    m_saveBtn->setMinimumHeight(60);
+
+    toolsLayout->addWidget(m_saveBtn);
+
+    connect(m_saveBtn, SIGNAL(pressed ()), this, SLOT(btnSavePressed()));
 
 
     toolsWidget->setLayout(toolsLayout);
@@ -88,6 +95,22 @@ MainWindow::~MainWindow()
 void MainWindow::setTabletDevice(QTabletEvent* event)
 {
     mp_view->setTabletDevice(event);
+}
+
+void MainWindow::btnSavePressed()
+{
+    // Path
+    QString initPath = QDir::homePath() + "/untitled.png";
+
+    QString filePath = QFileDialog::getSaveFileName( this,
+                                                     tr( "Save Image" ),
+                                                     initPath);
+    if ( filePath.isEmpty() )
+    {
+        return;// false;
+    }
+
+    mp_view->saveToFile(filePath);
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
