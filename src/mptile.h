@@ -45,6 +45,7 @@ public:
     uint16_t* Bits (bool readOnly);
     void drawPoint ( uint x, uint y, uint16_t r, uint16_t g, uint16_t b, uint16_t a );
     void updateCache();
+    void clear();
 private:
 
     uint16_t  t_pixels [k_tile_dim][k_tile_dim][4];

@@ -75,6 +75,7 @@ public:
 
 private:
     void resetNullTile();
+    void resetSurface(QSize size);
     std::string key;
 
     int tiles_width; // width in tiles

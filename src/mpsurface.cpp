@@ -19,7 +19,7 @@
 
 #include "mpsurface.h"
 
-static void freeSimpleTiledSurface(MyPaintSurface *surface)
+static void freeTiledSurface(MyPaintSurface *surface)
 {
     MPSurface *self = (MPSurface *)surface;
     mypaint_tiled_surface_destroy(self);
@@ -75,7 +75,10 @@ MPSurface::MPSurface(QSize size)
     this->onUpdateTileFunction   = defaultUpdateFonction;
     this->onNewTileFunction      = defaultUpdateFonction;
 
-    setSize(size);
+    // MPSurface vfuncs
+    this->parent.destroy = freeTiledSurface;
+
+    resetSurface(size);
 
     mypaint_tiled_surface_init((MyPaintTiledSurface *)this, onTileRequestStart, onTileRequestEnd);
 }
@@ -102,48 +105,23 @@ void MPSurface::setOnClearedSurface(MPOnUpdateSurfaceFunction onClearedSurfaceFu
 
 void MPSurface::setSize(QSize size)
 {
-    int width = size.width();
-    int height = size.height();
+    free(this->tile_buffer);
+    free(this->null_tile);
 
-    surfaceScene.setSceneRect(QRect(QPoint(0,0), size));
-
-    assert(width > 0);
-    assert(height > 0);
-
-    const int tile_size_pixels = MYPAINT_TILE_SIZE;
-
-    // MyPaintSurface vfuncs
-    this->parent.destroy = freeSimpleTiledSurface;
-
-    const int tiles_width = ceil((float)width / tile_size_pixels);
-    const int tiles_height = ceil((float)height / tile_size_pixels);
-    const size_t tile_size = tile_size_pixels * tile_size_pixels * 4 * sizeof(uint16_t);
-    const size_t buffer_size = tiles_width * tiles_height * tile_size;
-
-    assert(tile_size_pixels*tiles_width >= width);
-    assert(tile_size_pixels*tiles_height >= height);
-    assert(buffer_size >= width*height*4*sizeof(uint16_t));
-
-    uint16_t * buffer = (uint16_t *)malloc(buffer_size);
-    if (!buffer)
-        fprintf(stderr, "CRITICAL: unable to allocate enough memory: %Zu bytes", buffer_size);
-
-    memset(buffer, 255, buffer_size);
-
-    this->tile_buffer = buffer;
-    this->tile_size = tile_size;
-    this->null_tile = (uint16_t *)malloc(tile_size);
-    this->tiles_width = tiles_width;
-    this->tiles_height = tiles_height;
-    this->height = height;
-    this->width = width;
-
-    resetNullTile();
+    resetSurface(size);
 }
 
 void MPSurface::clear()
 {
-    surfaceScene.clear();
+    foreach(QGraphicsItem *item, surfaceScene.items())
+    {
+      MPTile *tile = qgraphicsitem_cast<MPTile *>(item);
+      if (tile)
+      {
+        tile->clear();
+      }
+    }
+
     this->onClearedSurfaceFunction(this);
 }
 
@@ -175,6 +153,43 @@ int MPSurface::getHeight()
 void MPSurface::resetNullTile()
 {
     memset(this->null_tile, 0, this->tile_size);
+}
+
+void MPSurface::resetSurface(QSize size)
+{
+    width = size.width();
+    height = size.height();
+
+    assert(width > 0);
+    assert(height > 0);
+
+    surfaceScene.setSceneRect(QRect(QPoint(0,0), size));
+
+    const int tile_size_pixels = MYPAINT_TILE_SIZE;
+
+    const int tiles_width = ceil((float)width / tile_size_pixels);
+    const int tiles_height = ceil((float)height / tile_size_pixels);
+
+    const size_t tile_size = tile_size_pixels * tile_size_pixels * 4 * sizeof(uint16_t);
+    const size_t buffer_size = tiles_width * tiles_height * tile_size;
+
+    assert(tile_size_pixels*tiles_width >= width);
+    assert(tile_size_pixels*tiles_height >= height);
+    assert(buffer_size >= width*height*4*sizeof(uint16_t));
+
+    uint16_t* buffer = (uint16_t *)malloc(buffer_size);
+    if (!buffer)
+        fprintf(stderr, "CRITICAL: unable to allocate enough memory: %Zu bytes", buffer_size);
+
+    memset(buffer, 255, buffer_size);
+
+    this->tile_buffer = buffer;
+    this->tile_size = tile_size;
+    this->null_tile = (uint16_t *)malloc(tile_size);
+    this->tiles_width = tiles_width;
+    this->tiles_height = tiles_height;
+
+    resetNullTile();
 }
 
 MPTile* MPSurface::getTileFromPos(const QPoint& pos)
