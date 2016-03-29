@@ -47,6 +47,7 @@ private:
     Ui::MainWindow *ui;
     MypaintView *mp_view;
     QPushButton *m_colorBtn;
+    QPushButton *m_clearBtn;
     bool m_tabletActive;
 };
 

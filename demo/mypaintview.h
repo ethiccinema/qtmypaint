@@ -63,6 +63,7 @@ protected:
 public slots:
     //  void BrushSelected(const QByteArray& content);
     void btnChgColorPressed();
+    void btnClearPressed();
 
     void onNewTile(MPSurface *surface, MPTile *tile);
     void onUpdateTile(MPSurface *surface, MPTile *tile);

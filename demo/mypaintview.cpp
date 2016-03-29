@@ -154,6 +154,11 @@ void MypaintView::btnChgColorPressed()
     }
 }
 
+void MypaintView::btnClearPressed()
+{
+    mypaint->clearSurface();
+}
+
 void MypaintView::updateCursor(const QTabletEvent *event)
 {
     QCursor cursor;

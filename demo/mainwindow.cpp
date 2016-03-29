@@ -17,6 +17,7 @@
     along with QTMyPaint. If not, see <http://www.gnu.org/licenses/>.
 */
 #include <QFileDialog>
+#include <QVBoxLayout>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -30,15 +31,51 @@ MainWindow::MainWindow(QWidget *parent) :
     mp_view = new MypaintView();
     setCentralWidget (mp_view);
 
-    // Add a color selector:
-    QDockWidget* p_dockColor = new QDockWidget("Color selection");
+
+
+
+    // Add tools:
+    //
+    QWidget* toolsWidget = new QWidget();
+
+    QVBoxLayout* toolsLayout = new QVBoxLayout();
+    toolsLayout->setSpacing(0);
+    toolsLayout->setMargin(0);
+    toolsLayout->setContentsMargins(0,0,0,0);
+    toolsLayout->setSizeConstraint(QLayout::SetFixedSize);
+
+
+    // Color selector
+    //
     m_colorBtn = new QPushButton("Click to select another brush color...");
     m_colorBtn->setMinimumHeight(60);
     m_colorBtn->setStyleSheet( "color: white; background-color: black;" );
-    p_dockColor->setWidget(m_colorBtn);
-    addDockWidget ( Qt::RightDockWidgetArea, p_dockColor );
+
+    toolsLayout->addWidget(m_colorBtn);
 
     connect(m_colorBtn, SIGNAL(pressed ()), mp_view, SLOT(btnChgColorPressed()));
+
+
+    // Clear button
+    //
+    m_clearBtn = new QPushButton("Clear");
+    m_clearBtn->setMinimumHeight(60);
+
+    toolsLayout->addWidget(m_clearBtn);
+
+    connect(m_clearBtn, SIGNAL(pressed ()), mp_view, SLOT(btnClearPressed()));
+
+
+
+    toolsWidget->setLayout(toolsLayout);
+
+    QDockWidget* p_dockTools = new QDockWidget("Tools");
+    p_dockTools->setWidget(toolsWidget);
+
+    addDockWidget ( Qt::RightDockWidgetArea, p_dockTools );
+
+
+
 
     m_tabletActive = false;
 }
