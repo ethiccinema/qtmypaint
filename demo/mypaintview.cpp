@@ -82,7 +82,6 @@ void MypaintView::onUpdateTile(MPSurface *surface, MPTile *tile)
 void MypaintView::onClearedSurface(MPSurface *surface)
 {
     Q_UNUSED(surface);
-    m_scene.clear();
 }
 
 void MypaintView::tabletEvent(QTabletEvent *event)

@@ -59,6 +59,7 @@ public:
     void hasClearedSurface(MPSurface *surface);
 
     void setSurfaceSize(QSize size);
+    QSize surfaceSize();
 
     void clearSurface();
     void renderSurface(QPainter *painter);

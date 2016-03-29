@@ -100,6 +100,11 @@ void MPHandler::setSurfaceSize(QSize size)
     m_surface->setSize(size);
 }
 
+QSize MPHandler::surfaceSize()
+{
+    return m_surface->size();
+}
+
 void MPHandler::clearSurface()
 {
     m_surface->clear();

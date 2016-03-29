@@ -111,15 +111,22 @@ void MPSurface::setSize(QSize size)
     resetSurface(size);
 }
 
+QSize MPSurface::size()
+{
+    return QSize(width, height);
+}
+
 void MPSurface::clear()
 {
-    foreach(QGraphicsItem *item, surfaceScene.items())
-    {
-      MPTile *tile = qgraphicsitem_cast<MPTile *>(item);
-      if (tile)
-      {
-        tile->clear();
-      }
+    QHashIterator<QPoint, MPTile*> i(m_Tiles);
+    while (i.hasNext()) {
+        i.next();
+        MPTile *tile = i.value();
+        if (tile)
+        {
+          tile->clear();
+          this->onUpdateTileFunction(this, tile);
+        }
     }
 
     this->onClearedSurfaceFunction(this);
@@ -127,7 +134,10 @@ void MPSurface::clear()
 
 void MPSurface::render(QPainter *painter)
 {
-    surfaceScene.render(painter);
+
+//    surfaceScene.setSceneRect(QRect(QPoint(0,0), size));
+//    surfaceScene.render(painter);
+
 }
 
 int MPSurface::getTilesWidth()
@@ -162,8 +172,6 @@ void MPSurface::resetSurface(QSize size)
 
     assert(width > 0);
     assert(height > 0);
-
-    surfaceScene.setSceneRect(QRect(QPoint(0,0), size));
 
     const int tile_size_pixels = MYPAINT_TILE_SIZE;
 
@@ -200,16 +208,23 @@ MPTile* MPSurface::getTileFromPos(const QPoint& pos)
 MPTile* MPSurface::getTileFromIdx(const QPoint& idx)
 {
 
-    QTransform transform;
-    MPTile* selectedTile = (MPTile*)surfaceScene.itemAt(idx, transform);
+    MPTile* selectedTile = NULL;
+    // Which tile index is it ?
+    if (checkIndex(idx.x()) && checkIndex(idx.y())) { // out of range ?
 
-    if (!selectedTile) {
-        selectedTile = new MPTile();
-        QPoint tilePos ( getTilePos(idx) );
-        selectedTile->setPos(tilePos);
+        // Ok, valid index. Does it exist already ?
+        selectedTile = m_Tiles.value(idx, NULL);
 
-        surfaceScene.addItem(selectedTile);
-        this->onNewTileFunction(this, selectedTile);
+        if (!selectedTile) {
+            // Time to allocate it, update table and insert it as a QGraphicsItem in scene:
+            selectedTile = new MPTile();
+            m_Tiles.insert(idx, selectedTile);
+
+            QPoint tilePos ( getTilePos(idx) );
+            selectedTile->setPos(tilePos);
+
+            this->onNewTileFunction(this, selectedTile);
+        }
     }
 
     return selectedTile;
