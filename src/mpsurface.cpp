@@ -125,8 +125,19 @@ void MPSurface::clear()
         MPTile *tile = i.value();
         if (tile)
         {
-          tile->clear();
-          this->onUpdateTileFunction(this, tile);
+            // Clear the content of the tile
+            //
+            tile->clear();
+
+            // Removes blank tile from the scene for output optimization
+            //
+            // A tile without a scene is not re-created but onNewTile is
+            // called when this tile is to be shown again.
+            //
+            QGraphicsScene* scene = tile->scene();
+            if (scene) {
+                scene->removeItem(tile);
+            }
         }
     }
 
@@ -247,7 +258,8 @@ MPTile* MPSurface::getTileFromIdx(const QPoint& idx)
 
             QPoint tilePos ( getTilePos(idx) );
             selectedTile->setPos(tilePos);
-
+        }
+        if (!selectedTile->scene()) {
             this->onNewTileFunction(this, selectedTile);
         }
     }

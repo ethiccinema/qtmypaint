@@ -42,17 +42,22 @@ Draw a stroke :
     mypaint->strokeTo(x, y); // Basic call
     mypaint->strokeTo(x, y, pressure, xTilt,  yTilt); // Call with tablet handling
 
-
 A signal/slot mecanism is used to handle stroke events :
 
 * newTile(MPSurface*, MPTile*) is called when a tile is added to the surface (the brush is drawing on a blank area)
 * updateTile(MPSurface*, MPTile*) is called when a tile is visually updated.
 
-MPTile inherits from QGraphicsItem and can be used with a QGraphicsScene object.
+MPTile inherits from QGraphicsItem and should be added to a QGraphicsScene object on the newTile() event.
 
-Additional events are :
+Render the surface as an image :
 
-* clearedSurface(MPSurface*) is called when the surface has been cleared (through mypaint->clearSurface()).
+    QImage image = mypaint->renderImage();
 
-Note that when a surface is cleared, exsting tiles are not deleted. They are just set to transparent.
+Clear the surface :
+
+    mypaint->clearSurface();
+
+* clearedSurface(MPSurface*) is called when the surface has been cleared.
+
+Note that in order to optimize the output of your UI, when a surface is cleared, all the MPtiles (QGraphicsItem) that represent this surface are automatically removed from their QGraphicsScene.
 
