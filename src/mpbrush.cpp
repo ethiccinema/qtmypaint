@@ -46,11 +46,13 @@ MPBrush::setColor(QColor newColor)
     float h = m_color.hue()/360.0;
     float s = m_color.saturation()/255.0;
     float v = m_color.value()/255.0;
+    float opacity = m_color.alpha()/255.0;
 
     mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_H, h);
     mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_S, s);
     mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_V, v);
 
+    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_OPAQUE, opacity);
 }
 
 void
