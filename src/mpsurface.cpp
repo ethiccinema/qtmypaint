@@ -104,6 +104,30 @@ void MPSurface::setOnClearedSurface(MPOnUpdateSurfaceFunction onClearedSurfaceFu
     this->onClearedSurfaceFunction = onClearedSurfaceFunction;
 }
 
+void MPSurface::loadImage(const QImage &image)
+{
+    QSize tileSize = QSize(MYPAINT_TILE_SIZE, MYPAINT_TILE_SIZE);
+
+    int nbTilesOnWidth = ceil(this->width / tileSize.width());
+    int nbTilesOnHeight = ceil(this->height / tileSize.height());
+
+    QImage sourceImage = image.scaled(this->size(), Qt::IgnoreAspectRatio);
+
+    for (int h=0; h < nbTilesOnHeight; h++) {
+
+        for (int w=0; w < nbTilesOnWidth; w++) {
+
+            MPTile *tile = getTileFromIdx(QPoint(w, h));
+            QRect tileRect = QRect(tile->pos().toPoint(), tileSize);
+            QImage tileImage = sourceImage.copy(tileRect);
+
+            tile->setImage(tileImage);
+
+            this->onUpdateTileFunction(this, tile);
+        }
+    }
+}
+
 void MPSurface::setSize(QSize size)
 {
     free(this->tile_buffer);

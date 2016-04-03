@@ -16,6 +16,7 @@ SOURCES += \
     $$PWD/mphandler.cpp \
     $$PWD/mpsurface.cpp \
     $$PWD/mptile.cpp \
+    $$PWD/mpbrushselector.cpp
 
 
 HEADERS += \
@@ -23,6 +24,7 @@ HEADERS += \
     $$PWD/mphandler.h \
     $$PWD/mpsurface.h \
     $$PWD/mptile.h \
+    $$PWD/mpbrushselector.h
 
 # --- json-c ---
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../json-c/release/ -ljson-c

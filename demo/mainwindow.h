@@ -24,7 +24,8 @@
 #include <QPushButton>
 #include <QColorDialog>
 
-#include <mypaintview.h>
+#include "mypaintview.h"
+#include "mpbrushselector.h"
 
 namespace Ui {
 class MainWindow;
@@ -41,6 +42,7 @@ public:
      void setTabletDevice(QTabletEvent *event);
 
 public slots:
+    void btnOpenPressed();
     void btnSavePressed();
 
 protected:
@@ -48,10 +50,15 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+
     MypaintView *mp_view;
+    MPBrushSelector *mp_brushes;
+
     QPushButton *m_colorBtn;
     QPushButton *m_clearBtn;
     QPushButton *m_saveBtn;
+    QPushButton *m_openBtn;
+
     bool m_tabletActive;
 };
 

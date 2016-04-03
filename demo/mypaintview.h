@@ -44,6 +44,7 @@ public:
     void setTabletDevice(QTabletEvent *event);
 
     void saveToFile(QString filePath);
+    void loadFromFile(QString filePath);
 
 private:
 
@@ -70,6 +71,8 @@ public slots:
     void onNewTile(MPSurface *surface, MPTile *tile);
     void onUpdateTile(MPSurface *surface, MPTile *tile);
     void onClearedSurface(MPSurface *surface);
+
+    void loadBrush(const QByteArray& content);
 };
 
 #endif // MYPAINTVIEW_H

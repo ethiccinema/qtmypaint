@@ -18,4 +18,6 @@
 
 // End generated config
 
+#define HAVE_JSON_C
+
 #endif // MYPAINTCONFIG_H

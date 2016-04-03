@@ -23,6 +23,10 @@
 
 #include "libmypaint.c"
 
+#define HAVE_JSON_C;
+
+#define DEFAULT_BRUSHES_PATH ":brushes"
+
 bool MPHandler::instanceFlag = false;
 MPHandler* MPHandler::currentHandler = NULL;
 
@@ -114,6 +118,16 @@ QImage MPHandler::renderImage()
 {
     QImage image = m_surface->renderImage();
     return image;
+}
+
+void MPHandler::loadImage(const QImage &image)
+{
+    m_surface->loadImage(image);
+}
+
+void MPHandler::loadBrush(const QByteArray &content)
+{
+    m_brush->load(content);
 }
 
 void

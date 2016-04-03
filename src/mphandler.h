@@ -26,6 +26,7 @@
 
 #include "mpbrush.h"
 #include "mpsurface.h"
+#include "mpbrushselector.h"
 
 #ifndef QTMYPAINT_SURFACE_WIDTH
 #define QTMYPAINT_SURFACE_WIDTH 100
@@ -64,6 +65,11 @@ public:
     void clearSurface();
     QImage renderImage();
 
+    void loadImage(const QImage &image);
+
+public slots:
+    void loadBrush(const QByteArray& content);
+
 private:
     MPHandler();
     static bool instanceFlag;
@@ -71,6 +77,7 @@ private:
 
     MPBrush *   m_brush;
     MPSurface * m_surface;
+    MPBrushSelector* m_brushSelector;
 
 signals:
     void updateTile(MPSurface *surface, MPTile *tile);

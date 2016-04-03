@@ -23,6 +23,7 @@
 // if it is not the case, you could simply convert to RGBA (not premul)
 
 #define CONV_16_8(x) ((x*255)/(1<<15))
+#define CONV_8_16(x) ((x*(1<<15))/255)
 
 class MPTile : public QGraphicsItem
 {
@@ -37,7 +38,7 @@ public:
     QImage image();
 
     virtual QRectF       boundingRect () const;
-    virtual bool         contains  (const QPointF & point) const;
+//    virtual bool         contains  (const QPointF & point) const;
     virtual QPainterPath shape     () const;
     virtual void         paint     (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -46,6 +47,8 @@ public:
     void drawPoint ( uint x, uint y, uint16_t r, uint16_t g, uint16_t b, uint16_t a );
     void updateCache();
     void clear();
+    void setImage(const QImage &image);
+
 private:
 
     uint16_t  t_pixels [k_tile_dim][k_tile_dim][4];

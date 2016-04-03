@@ -84,6 +84,11 @@ void MypaintView::onClearedSurface(MPSurface *surface)
     Q_UNUSED(surface);
 }
 
+void MypaintView::loadBrush(const QByteArray &content)
+{
+    MPHandler::handler()->loadBrush(content);
+}
+
 void MypaintView::tabletEvent(QTabletEvent *event)
 {
     m_tabletInUse = true;
@@ -136,7 +141,9 @@ void MypaintView::mouseReleaseEvent(QMouseEvent *event)
 
     // Finalize the stroke sequence.
     //
+//    QImage image = mypaint->renderImage();
 //    mypaint->clearSurface();
+//    mypaint->loadImage(image);
 }
 
 void MypaintView::btnChgColorPressed()
@@ -162,6 +169,16 @@ void MypaintView::saveToFile(QString filePath)
 {
     QImage image = mypaint->renderImage();
     image.save(filePath);
+}
+
+void MypaintView::loadFromFile(QString filePath)
+{
+    // Clear the surface
+    mypaint->clearSurface();
+
+    // Laod the new image
+    QImage image = QImage(filePath);
+    mypaint->loadImage(image);
 }
 
 void MypaintView::updateCursor(const QTabletEvent *event)

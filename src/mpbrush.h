@@ -32,10 +32,13 @@ public:
 
     MyPaintBrush * brush;
 
-    QColor  getColor();
-    void    setColor(QColor newColor);
+    void initBrush();
+    void load(const QByteArray& content);
 
-    void    initBrush();
+    QColor getColor();
+
+    void setColor(QColor newColor);
+    void setColor(QColor newColor, bool withOpacity);
 
 private:
     QColor m_color;

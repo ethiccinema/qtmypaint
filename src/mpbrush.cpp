@@ -32,31 +32,7 @@ MPBrush::~MPBrush()
     mypaint_brush_unref(brush);
 }
 
-QColor
-MPBrush::getColor()
-{
-    return m_color;
-}
-
-void
-MPBrush::setColor(QColor newColor)
-{
-    m_color = newColor;
-
-    float h = m_color.hue()/360.0;
-    float s = m_color.saturation()/255.0;
-    float v = m_color.value()/255.0;
-    float opacity = m_color.alpha()/255.0;
-
-    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_H, h);
-    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_S, s);
-    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_V, v);
-
-    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_OPAQUE, opacity);
-}
-
-void
-MPBrush::initBrush()
+void MPBrush::initBrush()
 {
     brush = mypaint_brush_new();
     mypaint_brush_from_defaults(brush);
@@ -79,3 +55,44 @@ MPBrush::initBrush()
     mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_DIRECTION_FILTER, 10.0);
     mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_DABS_PER_ACTUAL_RADIUS, 4.0);
 }
+
+void MPBrush::load(const QByteArray& content)
+{
+    mypaint_brush_from_defaults(brush);
+
+    if (!mypaint_brush_from_string(brush, content.constData()))
+    {
+        // Not able to load the selected brush. Let's execute some backup code...
+        qDebug("Trouble when reading the selected brush !");
+    }
+    setColor(m_color, false);
+}
+
+QColor MPBrush::getColor()
+{
+    return m_color;
+}
+
+void MPBrush::setColor(QColor newColor)
+{
+    setColor(newColor, true);
+}
+
+void MPBrush::setColor(QColor newColor, bool withOpacity)
+{
+    m_color = newColor;
+
+    float h = m_color.hue()/360.0;
+    float s = m_color.saturation()/255.0;
+    float v = m_color.value()/255.0;
+    float opacity = m_color.alpha()/255.0;
+
+    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_H, h);
+    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_S, s);
+    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_COLOR_V, v);
+
+    if (withOpacity) {
+        mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_OPAQUE, opacity);
+    }
+}
+

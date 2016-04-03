@@ -45,6 +45,25 @@ MainWindow::MainWindow(QWidget *parent) :
     toolsLayout->setSizeConstraint(QLayout::SetFixedSize);
 
 
+
+    // Open
+    //
+    m_openBtn = new QPushButton("Open");
+    toolsLayout->addWidget(m_openBtn);
+
+    connect(m_openBtn, SIGNAL(pressed ()), this, SLOT(btnOpenPressed()));
+
+
+
+    // Saver
+    //
+    m_saveBtn = new QPushButton("Save");
+    toolsLayout->addWidget(m_saveBtn);
+
+    connect(m_saveBtn, SIGNAL(pressed ()), this, SLOT(btnSavePressed()));
+
+
+
     // Color selector
     //
     m_colorBtn = new QPushButton("Click to select another brush color...");
@@ -56,22 +75,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_colorBtn, SIGNAL(pressed ()), mp_view, SLOT(btnChgColorPressed()));
 
 
-    // Clear button
+    // Clear
     //
     m_clearBtn = new QPushButton("Clear");
-//    m_clearBtn->setMinimumHeight(60);
-
     toolsLayout->addWidget(m_clearBtn);
 
     connect(m_clearBtn, SIGNAL(pressed ()), mp_view, SLOT(btnClearPressed()));
 
-
-    m_saveBtn = new QPushButton("Save");
-//    m_saveBtn->setMinimumHeight(60);
-
-    toolsLayout->addWidget(m_saveBtn);
-
-    connect(m_saveBtn, SIGNAL(pressed ()), this, SLOT(btnSavePressed()));
 
 
     toolsWidget->setLayout(toolsLayout);
@@ -82,7 +92,14 @@ MainWindow::MainWindow(QWidget *parent) :
     addDockWidget ( Qt::RightDockWidgetArea, p_dockTools );
 
 
+    // Add a docked widget
+    QDockWidget* p_dockBrush = new QDockWidget("Brush Library");
+    mp_brushes = new MPBrushSelector( ":brushes", NULL);
+    p_dockBrush->setWidget(mp_brushes);
+    addDockWidget ( Qt::RightDockWidgetArea, p_dockBrush );
 
+
+    connect(mp_brushes,  SIGNAL(brushSelected(const QByteArray&)), mp_view, SLOT(loadBrush(const QByteArray&)));
 
     m_tabletActive = false;
 }
@@ -95,6 +112,22 @@ MainWindow::~MainWindow()
 void MainWindow::setTabletDevice(QTabletEvent* event)
 {
     mp_view->setTabletDevice(event);
+}
+
+void MainWindow::btnOpenPressed()
+{
+    // Path
+    QString initPath = QDir::homePath();
+
+    QString filePath = QFileDialog::getOpenFileName( this,
+                                                     tr( "Open Image" ),
+                                                     initPath);
+    if ( filePath.isEmpty() )
+    {
+        return;// false;
+    }
+
+    mp_view->loadFromFile(filePath);
 }
 
 void MainWindow::btnSavePressed()

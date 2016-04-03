@@ -74,6 +74,8 @@ public:
     void clear();
     QImage renderImage();
 
+    void loadImage(const QImage &image);
+
 private:
     void resetNullTile();
     void resetSurface(QSize size);
