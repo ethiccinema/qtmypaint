@@ -125,5 +125,5 @@ void MPTile::clear()
 {
     memset(t_pixels, 0, sizeof(t_pixels)); // Tile is transparent
     m_cache_img.fill( QColor(Qt::transparent) ); // image cache is transparent too, and aligned to the pixel table:
-    updateCache();
+    m_cache_valid = true;
 }
