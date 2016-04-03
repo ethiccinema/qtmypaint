@@ -33,7 +33,7 @@ A global object is used for the communication with libmypaint
     mypaint->setSurfaceSize(size);
 
 
-### Load a bruch from json data :
+### Load a brush from json data :
 
     QByteArray jsonData = ...;
     mypaint->loadBrush(jsonData);
