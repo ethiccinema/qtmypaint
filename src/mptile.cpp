@@ -104,12 +104,12 @@ void MPTile::setImage(const QImage &image) {
     QSize tileSize = this->boundingRect().size().toSize();
 
     // Make sure the image has the same dimentions as the tile
-    QImage imageSource = image.scaled(tileSize, Qt::IgnoreAspectRatio);
+    m_cache_img = image.scaled(tileSize, Qt::IgnoreAspectRatio);
 
     for (int y = 0 ; y < tileSize.height() ; y++) {
          for (int x = 0 ; x < tileSize.width() ; x++) {
 
-             QRgb pixelColor = imageSource.pixel(x, y);
+             QRgb pixelColor = m_cache_img.pixel(x, y);
 
              t_pixels[y][x][k_alpha]    = CONV_8_16(qAlpha(pixelColor));
              t_pixels[y][x][k_red]      = CONV_8_16(qRed(pixelColor));
@@ -118,7 +118,7 @@ void MPTile::setImage(const QImage &image) {
 
          }
     }
-    updateCache();
+    m_cache_valid = true;
 }
 
 void MPTile::clear()
