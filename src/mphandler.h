@@ -26,7 +26,6 @@
 
 #include "mpbrush.h"
 #include "mpsurface.h"
-#include "mpbrushselector.h"
 
 #ifndef QTMYPAINT_SURFACE_WIDTH
 #define QTMYPAINT_SURFACE_WIDTH 100
@@ -81,7 +80,6 @@ private:
 
     MPBrush *   m_brush;
     MPSurface * m_surface;
-    MPBrushSelector* m_brushSelector;
 
 signals:
     void updateTile(MPSurface *surface, MPTile *tile);
