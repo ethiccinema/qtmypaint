@@ -162,8 +162,18 @@ MPHandler::endStroke()
 
 }
 
+float MPHandler::getBrushValue(MyPaintBrushSetting setting)
+{
+    return this->m_brush->getValue(setting);
+}
+
 void
 MPHandler::setBrushColor(QColor newColor)
 {
     this->m_brush->setColor(newColor);
+}
+
+void MPHandler::setBrushValue(MyPaintBrushSetting setting, float value)
+{
+    this->m_brush->setValue(setting, value);
 }

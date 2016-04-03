@@ -25,13 +25,28 @@ A global object is used for the communication with libmypaint
 
     MPHandler *mypaint = MPHandler::handler();
 
+
 Set the size of your drawing surface :
 
-    mypaint->setSurfaceSize(QSize(640, 480));
+    QSize size;
+    mypaint->setSurfaceSize(size);
+
 
 Set a brush color :
 
-    mypaint->setBrushColor(QColor(0, 0, 0));
+    QColor color;
+    mypaint->setBrushColor(color);
+
+
+Get and set a brush specific setting value :
+
+    float value = 0.3;
+    mypaint->setBrushValue(MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC, value);
+
+    value = mypaint->getBrushValue(MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC)
+
+Note that the setting type is defined by libmypaint's MyPaintBrushSetting enum.
+
 
 Draw a stroke :
 
@@ -49,9 +64,11 @@ A signal/slot mecanism is used to handle stroke events :
 
 MPTile inherits from QGraphicsItem and should be added to a QGraphicsScene object on the newTile() event.
 
+
 Render the surface as an image :
 
     QImage image = mypaint->renderImage();
+
 
 Clear the surface :
 
@@ -59,5 +76,11 @@ Clear the surface :
 
 * clearedSurface(MPSurface*) is called when the surface has been cleared.
 
-Note that in order to optimize the output of your UI, when a surface is cleared, all the MPtiles (QGraphicsItem) that represent this surface are automatically removed from their QGraphicsScene.
+Note that in order to optimize the output of the final UI, when a surface is cleared, all the MPtiles (QGraphicsItem) that represent this surface are automatically removed from their QGraphicsScene.
+You don't need to worry about that.
 
+
+Load the surface with an existing image :
+
+    QImage image;
+    mypaint->loadImage(image);
