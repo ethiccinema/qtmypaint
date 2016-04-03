@@ -29,19 +29,19 @@ Usage
 
 **Set the size of your drawing surface :**
 
-    QSize size;
+    QSize size = ...;
     mypaint->setSurfaceSize(size);
 
 
 **Set a brush color :**
 
-    QColor color;
+    QColor color = ...;
     mypaint->setBrushColor(color);
 
 
 **Get and set a brush specific setting value :**
 
-    float value = 0.3;
+    float value = ...;
     mypaint->setBrushValue(MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC, value);
 
     value = mypaint->getBrushValue(MYPAINT_BRUSH_SETTING_RADIUS_LOGARITHMIC)
@@ -83,5 +83,5 @@ _You don't need to worry about that._
 
 **Load the surface with an existing image :**
 
-    QImage image;
+    QImage image = ...;
     mypaint->loadImage(image);
