@@ -22,6 +22,7 @@ Usage
 ---------
 
 A global object is used for the communication with libmypaint
+----
 
     MPHandler *mypaint = MPHandler::handler();
 
