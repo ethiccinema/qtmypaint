@@ -64,6 +64,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
+    // Clear
+    //
+    m_clearBtn = new QPushButton("Clear");
+    toolsLayout->addWidget(m_clearBtn);
+
+    connect(m_clearBtn, SIGNAL(pressed ()), mp_view, SLOT(btnClearPressed()));
+
+
+
     // Color selector
     //
     m_colorBtn = new QPushButton("Click to select another brush color...");
@@ -73,14 +82,6 @@ MainWindow::MainWindow(QWidget *parent) :
     toolsLayout->addWidget(m_colorBtn);
 
     connect(m_colorBtn, SIGNAL(pressed ()), mp_view, SLOT(btnChgColorPressed()));
-
-
-    // Clear
-    //
-    m_clearBtn = new QPushButton("Clear");
-    toolsLayout->addWidget(m_clearBtn);
-
-    connect(m_clearBtn, SIGNAL(pressed ()), mp_view, SLOT(btnClearPressed()));
 
 
 
