@@ -65,7 +65,6 @@ void MPBrush::load(const QByteArray& content)
         // Not able to load the selected brush. Let's execute some backup code...
         qDebug("Trouble when reading the selected brush !");
     }
-    m_defaultOpacity = getValue(MYPAINT_BRUSH_SETTING_OPAQUE);
     setColor(m_color);
 }
 
