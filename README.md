@@ -44,6 +44,8 @@ A global object is used for the communication with libmypaint
     QColor color = ...;
     mypaint->setBrushColor(color);
 
+_Note that the alpha value is not handled by this method as the opacity is part of the brush settings._
+_If you wish to force the color opacity, you should use MPHandler::setBrushValue() with MYPAINT_BRUSH_SETTING_OPAQUE._
 
 ### Get and set a brush specific setting value :
 

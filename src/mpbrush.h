@@ -38,7 +38,6 @@ public:
     QColor getColor();
 
     void setColor(QColor newColor);
-    void setColor(QColor newColor, bool withOpacity);
 
     float getValue(MyPaintBrushSetting setting);
     void setValue(MyPaintBrushSetting setting, float value);

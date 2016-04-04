@@ -65,7 +65,8 @@ void MPBrush::load(const QByteArray& content)
         // Not able to load the selected brush. Let's execute some backup code...
         qDebug("Trouble when reading the selected brush !");
     }
-    setColor(m_color, false);
+    m_defaultOpacity = getValue(MYPAINT_BRUSH_SETTING_OPAQUE);
+    setColor(m_color);
 }
 
 QColor MPBrush::getColor()
@@ -75,25 +76,21 @@ QColor MPBrush::getColor()
 
 void MPBrush::setColor(QColor newColor)
 {
-    setColor(newColor, true);
-}
-
-void MPBrush::setColor(QColor newColor, bool withOpacity)
-{
     m_color = newColor;
 
     float h = m_color.hue()/360.0;
     float s = m_color.saturation()/255.0;
     float v = m_color.value()/255.0;
-    float opacity = m_color.alpha()/255.0;
+
+    // Opacity is not handled here as it is defined by the brush settings.
+    // If you wish to force opacity, use MPHandler::setBrushValue()
+    //
+//    float opacity = m_color.alpha()/255.0;
+//    mypaint_brush_set_base_value(brush, MYPAINT_BRUSH_SETTING_OPAQUE, opacity);
 
     setValue(MYPAINT_BRUSH_SETTING_COLOR_H, h);
     setValue(MYPAINT_BRUSH_SETTING_COLOR_S, s);
     setValue(MYPAINT_BRUSH_SETTING_COLOR_V, v);
-
-    if (withOpacity) {
-        setValue(MYPAINT_BRUSH_SETTING_OPAQUE, opacity);
-    }
 }
 
 float MPBrush::getValue(MyPaintBrushSetting setting)
