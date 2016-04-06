@@ -26,7 +26,9 @@ INCLUDEPATH += ../libmypaint
 INCLUDEPATH += ../src
 DEPENDPATH += ../src
 
-LIBS += -L../json-c -ljson-c
+win32:CONFIG(release, debug|release): LIBS += -L../json-c/release -ljson-c
+else:win32:CONFIG(debug, debug|release): LIBS += -L../json-c/debug -ljson-c
+else:unix: LIBS += -L../json-c -ljson-c
 
 win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../src/release/libQTMyPaint.a
 else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../src/debug/libQTMyPaint.a
