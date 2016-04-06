@@ -1,6 +1,6 @@
-# QTMyPaint
+# qtmypaint
 
-QTMyPaint is an interface to help integrate the libmypaint brush engine library within your QT based applications. (The example's GUI is based on a demo application made by Sebastien Leon)
+qtmypaint is an interface to help integrate the libmypaint brush engine library within your QT based applications. (The example's GUI is based on a demo application made by Sebastien Leon)
 
 The main code of this interface is stored in the sub-folder "src"
 
@@ -16,6 +16,19 @@ Build dependencies:
 * [json-c](https://github.com/json-c/json-c/wiki) A copy of json-c is included in this project
 * [libmypaint](https://github.com/mypaint/libmypaint) A copy of libmypaint is included in this project. It has been modified to be built in a C++ environment. It may not be the best approach. "libmypaint.c" has to be included so we can't use the headers of a pre-built version of the C lib.
 
+
+Compile
+-------
+
+    cd qtmypaint
+    qmake
+    make
+
+On Linux, you can then run the demo with
+
+    ./demo/demo
+
+_Note that on Mac and Windows, the path to the demo binary may be different._
 
 
 Usage
@@ -44,7 +57,7 @@ A global object is used for the communication with libmypaint
     QColor color = ...;
     mypaint->setBrushColor(color);
 
-_Note that the alpha value is not handled by this method as the opacity is part of the brush settings._
+_Note that the alpha value is not handled by this method as the opacity of the stroke is part of the brush settings._
 _If you wish to force the color opacity, you should use MPHandler::setBrushValue() with MYPAINT_BRUSH_SETTING_OPAQUE._
 
 ### Get and set a brush specific setting value :
