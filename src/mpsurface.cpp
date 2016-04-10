@@ -108,8 +108,8 @@ void MPSurface::loadImage(const QImage &image)
 {
     QSize tileSize = QSize(MYPAINT_TILE_SIZE, MYPAINT_TILE_SIZE);
 
-    int nbTilesOnWidth = ceil(this->width / tileSize.width());
-    int nbTilesOnHeight = ceil(this->height / tileSize.height());
+    int nbTilesOnWidth = ceil((float)this->width / (float)tileSize.width());
+    int nbTilesOnHeight = ceil((float)this->height / (float)tileSize.height());
 
     QImage sourceImage = image.scaled(this->size(), Qt::IgnoreAspectRatio);
 
