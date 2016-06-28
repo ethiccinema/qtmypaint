@@ -79,6 +79,7 @@ public:
 private:
     void resetNullTile();
     void resetSurface(QSize size);
+    bool isFullyTransparent(QImage image);
     std::string key;
 
     int tiles_width; // width in tiles

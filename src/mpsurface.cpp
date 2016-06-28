@@ -113,17 +113,30 @@ void MPSurface::loadImage(const QImage &image)
 
     QImage sourceImage = image.scaled(this->size(), Qt::IgnoreAspectRatio);
 
+    int nbTiles = 0;
+
     for (int h=0; h < nbTilesOnHeight; h++) {
 
         for (int w=0; w < nbTilesOnWidth; w++) {
 
-            MPTile *tile = getTileFromIdx(QPoint(w, h));
-            QRect tileRect = QRect(tile->pos().toPoint(), tileSize);
+            QPoint idx(w, h);
+            QPoint tilePos = getTilePos(idx) ;
+
+            QRect tileRect = QRect(tilePos, tileSize);
             QImage tileImage = sourceImage.copy(tileRect);
 
-            tile->setImage(tileImage);
+            // Optimization : Fully transparent (empty) tiles
+            // don't need to be created.
+            //
+            if (!isFullyTransparent(tileImage)) {
 
-            this->onUpdateTileFunction(this, tile);
+                nbTiles ++;
+
+                MPTile *tile = getTileFromIdx(idx);
+                tile->setImage(tileImage);
+
+                this->onUpdateTileFunction(this, tile);
+            }
         }
     }
 }
@@ -258,6 +271,25 @@ void MPSurface::resetSurface(QSize size)
     this->tiles_height = tiles_height;
 
     resetNullTile();
+}
+
+bool MPSurface::isFullyTransparent(QImage image)
+{
+    image.convertToFormat(QImage::Format_ARGB32);
+
+    for (int x = 0 ; x < image.width() ; x++) {
+
+        for (int y = 0 ; y < image.height() ; y++) {
+
+            QRgb currentPixel = (image.pixel(x, y));
+
+            if (qAlpha(currentPixel) != 0) {
+                return false;
+
+            }
+        }
+    }
+    return true;
 }
 
 MPTile* MPSurface::getTileFromPos(const QPoint& pos)
