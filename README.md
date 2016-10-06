@@ -6,7 +6,7 @@ The main code of this interface is stored in the sub-folder "src"
 
 Please feel free to fork and modify this project.
 
-License: GPL v3, see [LICENSE](./LICENSE) for details
+License: Modified BSD License, see [LICENSE](./LICENSE) for details
 
 
 Prerequisites
